@@ -28,6 +28,7 @@ public class Cli
             }
 
             var computers = CheckReachable.CheckComputers(_adComputers);
+            
             if (computers.Count > 0)
             {
                 DataWriter.WriteComputersToFile(@"C:\1\SoftwareInstalled-xrxlon-CarbonBlack.csv", computers);

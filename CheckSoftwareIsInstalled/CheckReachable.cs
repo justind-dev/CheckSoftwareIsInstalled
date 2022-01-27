@@ -6,7 +6,7 @@ public class CheckReachable
 {
     public static List<Computer> CheckComputers(List<string> adComputers)
     {
-        IPAddress computerIpAddress;
+        string computerIpAddress;
         bool computerReachable;
         bool computerCarbonBlackInstalled;
         bool computerMcAfeeInstalled;
@@ -15,8 +15,18 @@ public class CheckReachable
 
         foreach (string computerName in adComputers)
         {
-            computerIpAddress = NetworkHelper.GetHostIpAddress(computerName);
+            try
+            {
 
+                var ipAddress = NetworkHelper.GetHostIpAddress(computerName);
+                computerIpAddress = ipAddress.MapToIPv4().ToString();
+            }
+            catch
+            {
+                computerIpAddress = "UNREACHABLE";
+            }
+            
+            
             computerReachable = NetworkHelper.IsReachable(computerName);
 
             if (computerReachable && CheckSoftware.CheckInstalled("Carbon Black Cloud Sensor", computerName).Length > 0)
@@ -38,7 +48,7 @@ public class CheckReachable
             }
 
             var computer = new Computer(computerName,
-                computerIpAddress.ToString(),
+                computerIpAddress,
                 computerReachable,
                 computerCarbonBlackInstalled,
                 computerMcAfeeInstalled);
