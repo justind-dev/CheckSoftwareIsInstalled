@@ -7,7 +7,6 @@ public class CheckSoftware
 {
     public static bool CheckInstalled(string findByName, string hostName)
     {
-        string[] info = new string[3];
 
         string registryKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
 
