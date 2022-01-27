@@ -41,7 +41,7 @@ public class CheckReachable
                 computerCarbonBlackInstalled = false;
             }
 
-            if (computerReachable && CheckSoftware.CheckInstalled("DOESNOTEXIST", computerName))
+            if (computerReachable && CheckSoftware.CheckInstalled("McAfee", computerName))
             {
                 computerMcAfeeInstalled = true;
             }
