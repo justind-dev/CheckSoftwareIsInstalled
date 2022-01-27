@@ -13,24 +13,25 @@ public class CheckSoftware
         try
         {
             //64 bits computer
-            RegistryKey key64 = RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, hostName);
-            RegistryKey key = key64.OpenSubKey(registryKey);
-            if (key != null)
+            using (RegistryKey key64 = RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, hostName))
             {
-                foreach (RegistryKey subkey in key.GetSubKeyNames().Select(keyName => key.OpenSubKey(keyName)))
+                using (RegistryKey key = key64.OpenSubKey(registryKey))
                 {
-                    string displayName = subkey.GetValue("DisplayName") as string;
-                    if (displayName != null && displayName.Contains(findByName))
+
+                    if (key != null)
                     {
-                        subkey.Close();
-                        key64.Close();
-                        key.Close();
-                        return true;
+                        foreach (RegistryKey subkey in key.GetSubKeyNames().Select(keyName => key.OpenSubKey(keyName)))
+                        {
+                            string displayName = subkey.GetValue("DisplayName") as string;
+                            if (displayName != null && displayName.Contains(findByName))
+                            {
+                                return true;
+                            }
+                        }
                     }
                 }
             }
-            key64.Close();
-            key.Close();
+            
             return false;
         }
         catch
