@@ -6,6 +6,8 @@ public class CheckReachable
 {
     public static List<Computer> CheckComputers(List<string> adComputers)
     {
+        int totalComputers = adComputers.Count();
+        int count = 0;
         string computerIpAddress;
         bool computerReachable;
         bool computerCarbonBlackInstalled;
@@ -15,6 +17,7 @@ public class CheckReachable
 
         foreach (string computerName in adComputers)
         {
+            Console.WriteLine($"Checking {count} / {totalComputers}");
             try
             {
 
@@ -52,8 +55,9 @@ public class CheckReachable
                 computerReachable,
                 computerCarbonBlackInstalled,
                 computerMcAfeeInstalled);
-
             computers.Add(computer);
+            
+            count++;
         }
 
         return computers;

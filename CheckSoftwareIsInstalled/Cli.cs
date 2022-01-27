@@ -31,7 +31,7 @@ public class Cli
             
             if (computers.Count > 0)
             {
-                DataWriter.WriteComputersToFile(@"C:\1\SoftwareInstalled-xrxlon-CarbonBlack.csv", computers);
+                DataWriter.WriteComputersToFile(@"C:\1\CheckSoftwareInstalled.csv", computers);
             }
             
         }
