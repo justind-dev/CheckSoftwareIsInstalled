@@ -31,22 +31,14 @@ public class CheckReachable
             
             
             computerReachable = NetworkHelper.IsReachable(computerName);
-
-            if (computerReachable && CheckSoftware.CheckInstalled("Carbon Black Cloud Sensor", computerName))
+            if (computerReachable)
             {
-                computerCarbonBlackInstalled = true;
+                computerCarbonBlackInstalled = CheckSoftware.CheckInstalled("McAfee", computerName);
+                computerMcAfeeInstalled = (CheckSoftware.CheckInstalled("McAfee", computerName));
             }
             else
             {
                 computerCarbonBlackInstalled = false;
-            }
-
-            if (computerReachable && CheckSoftware.CheckInstalled("McAfee", computerName))
-            {
-                computerMcAfeeInstalled = true;
-            }
-            else
-            {
                 computerMcAfeeInstalled = false;
             }
 
