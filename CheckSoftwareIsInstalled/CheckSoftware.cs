@@ -22,13 +22,16 @@ public class CheckSoftware
                     string displayName = subkey.GetValue("DisplayName") as string;
                     if (displayName != null && displayName.Contains(findByName))
                     {
+                        subkey.Close();
+                        key64.Close();
                         key.Close();
                         return true;
                     }
                 }
             }
-
-            return true;
+            key64.Close();
+            key.Close();
+            return false;
         }
         catch
         {
