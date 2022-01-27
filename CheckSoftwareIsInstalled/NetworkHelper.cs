@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 
 namespace CheckSoftwareIsInstalled;
 
@@ -25,15 +26,15 @@ public static class NetworkHelper
         }
     }
 
-    public static string GetHostIpAddress(string hostName)
+    public static IPAddress GetHostIpAddress(string hostName)
     {
         try
         {
             var host = Dns.GetHostEntry(hostName);
-            var hostIp = host.AddressList.FirstOrDefault().MapToIPv4().ToString();
-            if (String.IsNullOrWhiteSpace(hostIp))
+            var hostIp = host.AddressList.FirstOrDefault().MapToIPv4();
+            if (hostIp == null)
             {
-                return "";
+                return null;
             }
             
             return hostIp;
@@ -74,5 +75,20 @@ public static class NetworkHelper
         }
         
         
+    }
+
+    public static bool IsReachable(string computerName)
+    {
+        var computerIP = GetHostIpAddress(computerName);
+        if (computerIP == null)
+        {
+            return false;
+        }
+        if (!GetHostPingable(computerIP))
+        {
+            return false;
+        }
+
+        return true;
     }
 }
