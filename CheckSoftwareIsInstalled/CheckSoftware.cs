@@ -5,33 +5,35 @@ namespace CheckSoftwareIsInstalled;
 
 public class CheckSoftware
 {
-    public static string[] CheckInstalled(string findByName, string hostName)
+    public static bool CheckInstalled(string findByName, string hostName)
     {
         string[] info = new string[3];
 
         string registryKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
 
-        //64 bits computer
-        RegistryKey key64 = RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, hostName);
-        RegistryKey key = key64.OpenSubKey(registryKey);
-        if (key != null)
+        try
         {
-            foreach (RegistryKey subkey in key.GetSubKeyNames().Select(keyName => key.OpenSubKey(keyName)))
+            //64 bits computer
+            RegistryKey key64 = RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, hostName);
+            RegistryKey key = key64.OpenSubKey(registryKey);
+            if (key != null)
             {
-                string displayName = subkey.GetValue("DisplayName") as string;
-                if (displayName != null && displayName.Contains(findByName))
+                foreach (RegistryKey subkey in key.GetSubKeyNames().Select(keyName => key.OpenSubKey(keyName)))
                 {
-                    info[0] = displayName;
-
-                    info[1] = subkey.GetValue("InstallLocation").ToString();
-
-                    info[2] = subkey.GetValue("Version").ToString();
+                    string displayName = subkey.GetValue("DisplayName") as string;
+                    if (displayName != null && displayName.Contains(findByName))
+                    {
+                        key.Close();
+                        return true;
+                    }
                 }
             }
 
-            key.Close();
+            return true;
         }
-
-        return info;
+        catch
+        {
+            return false;
+        }
     }
 }

@@ -32,7 +32,7 @@ public class CheckReachable
             
             computerReachable = NetworkHelper.IsReachable(computerName);
 
-            if (computerReachable && CheckSoftware.CheckInstalled("Carbon Black Cloud Sensor", computerName).Length > 0)
+            if (computerReachable && CheckSoftware.CheckInstalled("Carbon Black Cloud Sensor", computerName))
             {
                 computerCarbonBlackInstalled = true;
             }
@@ -41,7 +41,7 @@ public class CheckReachable
                 computerCarbonBlackInstalled = false;
             }
 
-            if (computerReachable && CheckSoftware.CheckInstalled("McAfee", computerName).Length > 0)
+            if (computerReachable && CheckSoftware.CheckInstalled("DOESNOTEXIST", computerName))
             {
                 computerMcAfeeInstalled = true;
             }
@@ -56,7 +56,7 @@ public class CheckReachable
                 computerCarbonBlackInstalled,
                 computerMcAfeeInstalled);
             computers.Add(computer);
-            
+            Console.WriteLine($"{computerName} | Carbon Black Installed {computerCarbonBlackInstalled} | McAfee Installed {computerMcAfeeInstalled}");
             count++;
         }
 
